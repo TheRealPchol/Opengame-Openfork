@@ -1,11 +1,18 @@
 from dataclasses import  dataclass
 
 @dataclass
-class Point:
-    x: int
-    y: int
-    label: str = "Точка"
+class Game:
+    url: str
+    name: str
+    year: str
+    rating: str
 
-if __name__ == "__main__":
-    p = Point(x=1, y=3, label="A")
-    print(p)
+@dataclass
+class Tag:
+    slug: str
+    name: str
+
+@dataclass
+class Platform:
+    code: str
+    title: str

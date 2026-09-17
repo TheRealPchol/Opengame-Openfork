@@ -25,8 +25,21 @@ class StopGameClient:
         tags = response.json().get("tags")
         return tags
 
-    def fetch_platforms(self):
-        ...
+    def fetch_platforms(self) -> list[dict]:
+        response = self._get("/ajax/games/platforms")
+        platforms = response.json().get("platforms")
+        return platforms
+
+    def fetch_catalog_page(self, genre_slugs: list[str],
+                           platform_codes: list[str], page: int = 1) -> str:
+        params = {
+            "genre[]": genre_slugs,
+            "platform[]": platform_codes,
+            "p": page,
+        }
+        html = self._get("/games/catalog", params).text
+        time.sleep(self.pause)
+        return html
 
     def _get(self, url: str, params: dict | None = None):
         logger.debug(f"GET {url=} {params=}")
