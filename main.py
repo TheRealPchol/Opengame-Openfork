@@ -1,4 +1,3 @@
-# main.py
 import argparse
 import logging
 import sys
@@ -7,29 +6,30 @@ logger = logging.getLogger(__name__)
 
 
 def build_parser() -> argparse.ArgumentParser:
-
-    parser = argparse.ArgumentParser(
-        prog="stopgame",
-        description="Каталог игр StopGame из командной строки",
-    )
-    parser.add_argument(
+    common_parser = argparse.ArgumentParser(add_help=False)
+    common_parser.add_argument(
         "--log-level",
         default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
         help="Уровень сообщений в логе",
     )
+    parser = argparse.ArgumentParser(
+        prog="stopgame",
+        description="Каталог игр StopGame из командной строки",
+        parents=[common_parser]
+    )
 
     subparsers = parser.add_subparsers(dest="command")
 
-    subparsers.add_parser("update", help="скачать справочники жанров и платформ")
+    subparsers.add_parser("update", help="скачать справочники жанров и платформ", parents=[common_parser])
 
-    p_genres = subparsers.add_parser("genres", help="показать доступные жанры")
+    p_genres = subparsers.add_parser("genres", help="показать доступные жанры", parents=[common_parser])
     p_genres.add_argument("--save", metavar="ФАЙЛ", help="записать список в файл")
 
-    p_platforms = subparsers.add_parser("platforms", help="показать доступные платформы")
+    p_platforms = subparsers.add_parser("platforms", help="показать доступные платформы", parents=[common_parser])
     p_platforms.add_argument("--save", metavar="ФАЙЛ", help="записать список в файл")
 
-    p_games = subparsers.add_parser("games", help="загрузить игры по фильтрам")
+    p_games = subparsers.add_parser("games", help="загрузить игры по фильтрам", parents=[common_parser])
     p_games.add_argument("--genres", nargs="+", metavar="ЖАНР",
                          help="жанры, темы, режимы (как на сайте)")
     p_games.add_argument("--platforms", nargs="+", metavar="ПЛАТФОРМА",
@@ -72,7 +72,7 @@ def main():
         datefmt="%H:%M:%S",
     )
 
-    func = commands[args.command]   # выбираем функцию по имени команды
+    func = commands[args.command]  # выбираем функцию по имени команды
     func(args)
 
 
