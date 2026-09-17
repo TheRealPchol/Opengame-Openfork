@@ -2,6 +2,8 @@ import argparse
 import logging
 import sys
 
+from logging_config import BASIC_CONFIG
+
 logger = logging.getLogger(__name__)
 
 
@@ -67,9 +69,8 @@ def main():
     args = parser.parse_args()
 
     logging.basicConfig(
-        level=args.log_level,
-        format="%(asctime)s %(levelname)-7s %(name)s: %(message)s",
-        datefmt="%H:%M:%S",
+        **BASIC_CONFIG,
+        level=args.log_level
     )
 
     func = commands[args.command]  # выбираем функцию по имени команды
