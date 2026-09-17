@@ -68,9 +68,9 @@ def main():
     parser = build_parser()
     args = parser.parse_args()
 
+    BASIC_CONFIG["level"] = args.log_level
     logging.basicConfig(
         **BASIC_CONFIG,
-        level=args.log_level
     )
 
     func = commands[args.command]  # выбираем функцию по имени команды
