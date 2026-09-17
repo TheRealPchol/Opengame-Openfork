@@ -1,6 +1,7 @@
 import argparse
 import logging
-import sys
+import reference
+
 
 from logging_config import BASIC_CONFIG
 
@@ -33,9 +34,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_games = subparsers.add_parser("games", help="загрузить игры по фильтрам", parents=[common_parser])
     p_games.add_argument("--genres", nargs="+", metavar="ЖАНР",
-                         help="жанры, темы, режимы (как на сайте)")
+                         help="жанры, темы, режимы (как на сайте)", default=[])
     p_games.add_argument("--platforms", nargs="+", metavar="ПЛАТФОРМА",
-                         help="платформы (как на сайте)")
+                         help="платформы (как на сайте)", default=[])
     p_games.add_argument("--pages", type=int, default=1, help="сколько страниц скачать")
     p_games.add_argument("--out", default="games.csv", help="куда сохранить результат")
 
@@ -56,6 +57,23 @@ def cmd_platforms(args):
 
 def cmd_games(args):
     logger.info(f"Команда games {args}")
+
+    platforms = reference.load_platforms()
+    platform_codes = []
+    for user_input in args.platforms:
+        for platform in platforms:
+            if platform.matches(user_input):
+                platform_codes.append(platform.code)
+
+    tags = reference.load_tags()
+    tag_slugs = []
+    for user_input in args.genres:
+        for tag in tags:
+            if tag.matches(user_input):
+                tag_slugs.append(tag.slug)
+
+    print(f"{platform_codes=}, {tag_slugs=}")
+
 
 
 def main():

@@ -42,8 +42,7 @@ def load_tags() -> list[Tag]:
         tags = []
         for row in reader:
             tags.append(
-
-                Tag(slug=row["slug"], name=row["name"])
+                Tag(slug=row["slug"], name=row["name_singular"])
             )
 
     logger.debug(f"Прочитано {len(tags)} тегов")
@@ -60,6 +59,8 @@ def load_platforms() -> list[Platform]:
             )
     logger.debug(f"Прочитано {len(platforms)} платформ")
     return platforms
+
+# def find_tag(user_input: str, tags: list[Tag]) -> Tag:
 
 
 
