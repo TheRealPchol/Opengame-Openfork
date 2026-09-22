@@ -2,7 +2,7 @@ import time
 
 import requests
 import logging
-
+from requests.exceptions import HTTPError, ConnectionError, Timeout, RequestException
 from logging_config import BASIC_CONFIG
 
 logger = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ class StopGameClient:
             "sec-ch-ua-platform": "\"Windows\"",
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36"
         }
-        self.delay = 1
+        self.delay = 0.2
 
     def fetch_tags(self) -> list[dict]:
         response = self._get("/ajax/games/tags")
@@ -49,10 +49,21 @@ class StopGameClient:
             self.base_url + url,
         )
         logger.debug(response)
+        try:
+            response.raise_for_status()
+        except Exception as e:
+            return {
+                "status": 1, "error": {
+                    "type": str(e.__class__.__name__),
+                    "message": str(e),
 
-        response.raise_for_status()
-        return response
+                }
+            }
 
+        return {
+            "status": 0,
+            "content": response
+        }
 
 if __name__ == "__main__":
     logging.basicConfig(**BASIC_CONFIG)

@@ -44,19 +44,19 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def cmd_update(args):
-    logger.info(f"Команда update {args}")
+    logger.info(f"command update {args}")
 
 
 def cmd_genres(args):
-    logger.info(f"Команда genres {args}")
+    logger.info(f"command genres {args}")
 
 
 def cmd_platforms(args):
-    logger.info(f"Команда platforms {args}")
+    logger.info(f"command platforms {args}")
 
 
 def cmd_games(args):
-    logger.info(f"Команда games {args}")
+    logger.info(f"command games {args}")
 
     platforms = reference.load_platforms()
     platform_codes = []

@@ -1,1 +1,7 @@
 /config/
+*.pyc
+.venv/*
+.venv/
+tmp.py
+.idea
+*.csv

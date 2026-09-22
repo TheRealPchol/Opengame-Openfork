@@ -1,0 +1,5 @@
+19:19:44 INFO    __main__: command games Namespace(log_level='INFO', command='games', genres=[], platforms=[], pages=1, out='games.csv')
+19:20:18 INFO    __main__: command games Namespace(log_level='INFO', command='games', genres=[], platforms=[], pages=1, out='games.csv')
+19:21:18 INFO    __main__: command games Namespace(log_level='INFO', command='games', genres=[], platforms=[], pages=1, out='games.csv')
+19:21:29 INFO    __main__: command games Namespace(log_level='INFO', command='games', genres=[], platforms=[], pages=1, out='games.csv')
+19:21:56 INFO    __main__: command games Namespace(log_level='INFO', command='games', genres=[], platforms=[], pages=1, out='games.csv')
