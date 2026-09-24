@@ -18,8 +18,6 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command")
 
     update_subpars = subparsers.add_parser("update", help="скачать справочники жанров и платформ", parents=[common_parser])
-    update_subpars.add_argument("-c", '--count', help="Количество игр которые надо распарсить", type=int)
-    update_subpars.add_argument("-p", "--page", help="Страница которую надо распарсить", type=int, default=0)
 
     p_genres = subparsers.add_parser("genres", help="показать доступные жанры", parents=[common_parser])
     p_genres.add_argument("--save", metavar="ФАЙЛ", help="записать список в файл")
@@ -33,6 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_games.add_argument("--platforms", nargs="+", metavar="ПЛАТФОРМА",
                          help="платформы (как на сайте)", default=[])
     p_games.add_argument("--pages", type=int, default=1, help="сколько страниц скачать")
+    update_subpars.add_argument("-s", "--save", help="Имя выходного файла (csv)", type=str)
     p_games.add_argument("--out", default="games.csv", help="куда сохранить результат")
 
     return parser

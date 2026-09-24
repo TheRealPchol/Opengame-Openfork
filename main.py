@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def cmd_update(args):
-    reference.get_games(page=args.page, count=args.count, verbose=args.verbose)
+    logger.info(f"command update {args}")
 
 
 def cmd_genres(args):
@@ -37,7 +37,8 @@ def cmd_games(args):
             if tag.matches(user_input):
                 tag_slugs.append(tag.slug)
 
-    print(f"{platform_codes=}, {tag_slugs=}")
+    logger.debug(f"{platform_codes=}, {tag_slugs=}")
+    resp = reference.get_games(page=args.pages, verbose=args.verbose, tags=tag_slugs, platforms=platform_codes)
 
 
 
