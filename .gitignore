@@ -1,13 +1,13 @@
-/config/
+config/
 *.pyc
 .venv/*
 .venv/
 tmp.py
 .idea
-*.csvenv/
+*.csv
 *.html
 *.log
 env/
-env/.
+env/*
 __pycahce__/*
 __pycahce__/

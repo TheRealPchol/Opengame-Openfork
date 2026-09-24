@@ -35,7 +35,7 @@ def export_games(games: list[Game], output="games.csv") -> str:
                     "Рейтинг": game.rating
                 }
             )
-        writer.writerow(result_dict)
+        writer.writerows(result_dict)
     return os.path.abspath(output)
 def save_tags(data: list[dict]) -> None:
     """Выгружает информацию о доступных тегах в каталоге"""
@@ -89,7 +89,7 @@ def load_platforms() -> list[Platform]:
 
 # def find_tag(user_input: str, tags: list[Tag]) -> Tag:
 
-def get_games(page: str = 1, tags: list = None, platforms: list = None, verbose: bool = False, count: int = 10) -> list[Game]:
+def get_games(page: str = 1, tags: list = None, platforms: list = None, verbose: bool = False, count: int = 10, args: str = build_parser().parse_args()) -> list[Game]:
     client = StopGameClient()
     parser = build_parser()
     resp: list = list([])
@@ -133,6 +133,8 @@ def get_games(page: str = 1, tags: list = None, platforms: list = None, verbose:
                         games_parsed += 1
                         if games_parsed >= count:
                             pass
+    if args.out:
+        export_games(resp, args.out)
     return resp
                     
 def info_by_soup(soup, show: bool = False, _step: str = "", _start: str = "\n", url: str = '') -> models.Game:
