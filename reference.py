@@ -1,11 +1,13 @@
-import datetime
+from datetime import datetime
 import os
 import logging
 import csv
 from models import Tag, Platform, Game
 from client import StopGameClient
 from bs4 import BeautifulSoup as bs
-from models import Game
+import models
+from build_parser import build_parser
+
 logger = logging.getLogger(__name__)
 
 CONFIG_DIR = "config"
@@ -65,24 +67,29 @@ def load_platforms() -> list[Platform]:
 
 # def find_tag(user_input: str, tags: list[Tag]) -> Tag:
 
-def get_games(page: str = 1, tags: list = None, platforms: list = None) -> list[Game]:
+def get_games(page: str = 1, tags: list = None, platforms: list = None, verbose: bool = False, count: int = 10) -> list[Game]:
     client = StopGameClient()
-    params = {}
+    params = {
+        "p": str(page)
+    }
     if tags: params['tags'] = tags
     if platforms: params['platforms'] = platforms
+    #print(params)
     response = client._get("/games/catalog", params=params)
     if response["status"] == 0:
         html = response["content"].text
     else:
         logger.warning(f"Ошибка {response["error"]["type"]}: {response['error']['message']}")
         html = None
-    print(params)
-    print(response["content"].url)
+    #print(params)
+    #print(response["content"].url)
     if html:
+        print(response["content"].url)
         soup = bs(html, "html.parser")
         games_class = soup.find("div", class_="list-view _section-with-pagination_82nn8_509").find("div", class_="_games-grid_fl71g_283")
         games_all = soup.find_all("div")
-
+        games_parsed = 0
+        resp:list = list([])
         for i in range(len(games_all)):
             game = games_all[i]
             if game.get("data-key"):
@@ -95,15 +102,27 @@ def get_games(page: str = 1, tags: list = None, platforms: list = None) -> list[
                 if res["status"] == 0:
                     soup = bs(res["content"].text, "html.parser")
                     #print(url)
-                    info_by_soup(soup)
-                    break
-def info_by_soup(soup, show: bool = False, _step: str = "", _start: str = "\n") -> models.Game:
-    result = models.Game()
+                    
+                    result = info_by_soup(soup, show=verbose, url=url)
+                    resp.append(result)
+                    games_parsed += 1
+                    if games_parsed >= count:
+                        break
+        return res
+                    
+def info_by_soup(soup, show: bool = False, _step: str = "", _start: str = "\n", url: str = '') -> models.Game:
     date_of_out = soup.find("div", class_="_game-info_1bso0_696").find("dl", class_="_game-info__grid_1bso0_993").find_all("dd")[0].text
-    result.date = datetime.strptime(date_of_out, "%d.%m.%Y")
     name = soup.find('h1', class_="_game-title_1bso0_702").text
-
-
+    try:
+        rating = soup.find("div", class_="_left-column__user-ratings_1bso0_1").find("span").text
+    except AttributeError:
+        rating = "Отсутствует"
+    if show:
+        print(f"{_start}{_step}Информация о игре {name}:")    
+        print(f"{_step}    Имя: {name}")
+        print(f"{_step}    Дата выхода: {date_of_out}")
+        print(f'{_step}    Рейтинг: {rating}')
+    return models.Game(url, name, year=date_of_out, rating=rating)
 if __name__ == "__main__":
     # from client import StopGameClient
     # from logging_config import BASIC_CONFIG

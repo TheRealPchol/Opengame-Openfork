@@ -4,4 +4,10 @@
 .venv/
 tmp.py
 .idea
-*.csv
+*.csvenv/
+*.html
+*.log
+env/
+env/.
+__pycahce__/*
+__pycahce__/

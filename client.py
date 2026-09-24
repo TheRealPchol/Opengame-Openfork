@@ -47,6 +47,8 @@ class StopGameClient:
         time.sleep(self.delay)
         response = requests.get(
             self.base_url + url,
+            params=params,
+            headers=self.headers
         )
         logger.debug(response)
         try:
