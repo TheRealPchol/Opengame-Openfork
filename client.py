@@ -22,12 +22,12 @@ class StopGameClient:
 
     def fetch_tags(self) -> list[dict]:
         response = self._get("/ajax/games/tags")
-        tags = response.json().get("tags")
+        tags = response["content"].json().get("tags")
         return tags
 
     def fetch_platforms(self) -> list[dict]:
         response = self._get("/ajax/games/platforms")
-        platforms = response.json().get("platforms")
+        platforms = response["content"].json().get("platforms")
         return platforms
 
     def fetch_catalog_page(self, genre_slugs: list[str],

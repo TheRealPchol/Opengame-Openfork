@@ -2,6 +2,7 @@ import argparse
 import logging
 import reference
 from build_parser import build_parser
+from client import StopGameClient
 
 from logging_config import BASIC_CONFIG
 
@@ -11,7 +12,17 @@ logger = logging.getLogger(__name__)
 
 def cmd_update(args):
     logger.info(f"command update {args}")
-
+    client = StopGameClient()
+    tags_json = client.fetch_tags()
+    res_tags = []
+    for tag in tags_json:
+        res_tags.append(tag)
+    reference.save_tags(res_tags)
+    platforms_json = client.fetch_platforms()
+    res_platforms = []
+    for platform in platforms_json:
+        res_platforms.append(platform)
+    reference.save_platforms(res_platforms)
 
 def cmd_genres(args):
     logger.info(f"command genres {args}")

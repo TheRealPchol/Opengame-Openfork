@@ -93,6 +93,7 @@ def get_games(page: str = 1, tags: list = None, platforms: list = None, verbose:
     client = StopGameClient()
     parser = build_parser()
     resp: list = list([])
+    zzzzzzz = False
     for w in range(page):
         params = {
             "p": w + 1
@@ -132,7 +133,14 @@ def get_games(page: str = 1, tags: list = None, platforms: list = None, verbose:
                         resp.append(result)
                         games_parsed += 1
                         if games_parsed >= count:
-                            pass
+                            zzzzzzz = True
+                            break
+                        else:
+                            zzzzzzz = False
+
+
+            if not zzzzzzz:
+                break
     if args.out:
         export_games(resp, args.out)
     return resp
