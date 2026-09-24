@@ -48,9 +48,9 @@
    python main.py -v games --genres "Мод"
    ```
  *  Также можно объединять как в случае с platforms
-   ```commandline
-   python main.py -v games --genres "Мод" "Стратегия"
-   ```
+    ```commandline
+    python main.py -v games --genres "Мод" "Стратегия"
+    ```
  * Флаги можно комбинировать
    ```commandline
    python main.py -v games --genres "Мод" "Стратегия" --platforms "Linux" "Sony PlayStation 5"
