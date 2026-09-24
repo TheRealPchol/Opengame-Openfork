@@ -49,7 +49,8 @@ def cmd_games(args):
                 tag_slugs.append(tag.slug)
 
     logger.debug(f"{platform_codes=}, {tag_slugs=}")
-    resp = reference.get_games(page=args.pages, verbose=args.verbose, tags=tag_slugs, platforms=platform_codes, args=args)
+
+    #resp = reference.get_games(page=args.pages, verbose=args.verbose, tags=tag_slugs, platforms=platform_codes, args=args)
 
 
 

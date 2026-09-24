@@ -41,7 +41,7 @@ def save_tags(data: list[dict]) -> None:
     """Выгружает информацию о доступных тегах в каталоге"""
     if not os.path.exists(TAGS_FILE):
         logger.info(f"Директория {CONFIG_DIR} не найдена и будет создана")
-        os.makedirs(CONFIG_DIR)
+        os.makedirs(CONFIG_DIR, exist_ok=True)
     with open(TAGS_FILE, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=["slug", "name_singular"], extrasaction='ignore')
         writer.writeheader()
